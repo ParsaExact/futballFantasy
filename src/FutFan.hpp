@@ -14,6 +14,9 @@ public:
     void add_player(string player_name, int role);
     void add_club(string club_name);
     void add_player_to_club(string club_name, string player_name);
+    void make_new_week_stats(int week_num);
+    void update_match_stats(int week_num, vector <string> &data);
+    void update_week_stats( int week_num);
     void debug(){
         for (Club* club : clubs)
             club->debug();
