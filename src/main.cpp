@@ -3,7 +3,8 @@
 
 int main()
 {
-    FutFan futFan;
-    futFan.get_league_data(LEAGUE_ADDRESS);
+    FutFan futfan;
+    futfan.get_league_data(LEAGUE_ADDRESS);
+    // futfan.debug();
     return 0;
 }

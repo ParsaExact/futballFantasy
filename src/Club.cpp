@@ -1,9 +1,15 @@
 #include "Club.hpp"
 
-Club::Club(string _name){
+Club::Club(string _name)
+{
     name = _name;
 }
 
-void Club::add_player(int pos, Player* p_player){
-    players[pos].push_back(p_player);
+string Club::get_name()
+{
+    return name;
+}
+
+void Club::add_player(int role, Player* p_player){
+    players[role].push_back(p_player);
 }

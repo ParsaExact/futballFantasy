@@ -11,10 +11,10 @@ vector <string> split_line_into_words(string line, char delimiter)
     return words;
 }
 
-int find_int_pos(string position)
+int find_int_role(string str_role)
 {
-    for (int i = 0; i < POS_CNT; ++i)
-        if (POS_NAME[i] == position || POS_ABB_NAME[i] == position)
+    for (int i = 0; i < ROLE_CNT; ++i)
+        if (ROLE_NAME[i] == str_role || ROLE_ABB_NAME[i] == str_role)
             return i;
     // throw not found position error
 }
