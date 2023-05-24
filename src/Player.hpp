@@ -14,16 +14,13 @@ public:
     void update_injured(int week_num);
     void update_score(int week_num, float week_score);
     void add_week_stats(int week_num);
-    bool is_available(int week_num);
-    void debug()
-    {
-        cout << "Player name: " << name << ' ' << weekstats[0].get_score() << endl;
-    };
+    void update_availability(int week_num);
 
 private:
     string name;
     int role;
     int cnt_yellow_cards;
+    bool can_play;
     vector<WeekStats> weekstats;
 };
 

@@ -132,6 +132,7 @@ void FutFan::update_week_stats(int week_num)
     {
         player->add_week_stats(week_num);
     }
+
     string file_name = WEEK_STATS_FOLDER + "week_" + to_string(week_num) + ".csv";
     vector<vector<string>> week = make_file_lines(file_name, COMMA);
     for (int i = 0; i < (int)week.size(); ++i)
@@ -139,5 +140,9 @@ void FutFan::update_week_stats(int week_num)
         if (i == JUNK_LINE)
             continue;
         update_match_stats(week_num, week[i]);
+    }
+    for(Player* player : players)
+    {
+        player->update_availability(week_num);
     }
 }
