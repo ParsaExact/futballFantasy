@@ -47,30 +47,36 @@ void Player::update_score(int week_num, float week_score)
     weekstats[week_num].set_score(week_score);
 }
 
-
 void Player::update_availability(int week_num)
 {
     week_num--;
-    for (int i = week_num; i >= max(0, week_num-RED_CARD_SUS_DAYS) ; --i)
+    for (int i = week_num; i >= max(0, week_num - RED_CARD_SUS_DAYS); --i)
     {
-        if(weekstats[i].get_has_red_card()){
+        if (weekstats[i].get_has_red_card())
+        {
             cnt_yellow_cards = 0;
             can_play = false;
-            return ;
+            return;
         }
     }
     for (int i = week_num; i >= max(week_num - INJURY_SUS_DAYS, 0); --i)
     {
-        if (weekstats[i].get_is_injured()){
+        if (weekstats[i].get_is_injured())
+        {
             can_play = false;
-            return ;
+            return;
         }
     }
-    if(cnt_yellow_cards == 3)
+    if (cnt_yellow_cards == 3)
     {
         cnt_yellow_cards = 0;
         can_play = false;
-        return ;
+        return;
     }
     can_play = true;
+}
+
+float Player::find_player_score(int week_num)
+{
+    return weekstats[week_num-1].get_score();
 }

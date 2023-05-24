@@ -23,6 +23,7 @@ const string ROLE_NAME[] = {"GoalKeeper", "Defender", "Midfielder", "Forward"};
 const string ROLE_ABB_NAME[] = {"gk", "df", "md", "fw"};
 
 const char COMMA = ',';
+const char SPACE = ' ';
 const char NAME_DELIM = ';';
 const char SCORE_DELIM = ':';
 
@@ -45,4 +46,5 @@ vector <string> split_line_into_words(string line, char delimiter);
 
 int find_int_role(string position);
 
+string convert_underline_to_space(string team);
 #endif

@@ -21,6 +21,8 @@ public:
     void update_match_stats(int week_num, vector <string> &data);
     void update_week_stats( int week_num);
     string output_standing();
+    void team_of_the_week(int week_num);
+    void matchs_of_the_week(int week_num);
 private:
     vector <Player*> players;
     vector <Club*> clubs;

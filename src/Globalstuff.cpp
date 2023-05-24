@@ -20,3 +20,11 @@ int find_int_role(string str_role)
             return i;
     // throw not found position error
 }
+
+string convert_underline_to_space(string team)
+{
+    for( int i = 0 ; i < team.size() ; ++i)
+        if(team[i] == COMMA)
+            team[i] = SPACE;
+    return team;
+}
