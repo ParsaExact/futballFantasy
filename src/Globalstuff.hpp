@@ -8,6 +8,8 @@
 #include<dirent.h>
 #include<sstream>
 #include<map>
+#include "Exception.hpp"
+
 
 using namespace std;
 
