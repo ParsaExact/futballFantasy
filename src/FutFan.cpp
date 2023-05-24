@@ -18,7 +18,7 @@ void FutFan::add_player(string player_name, int role)
 
 Player *FutFan::find_player_by_name(string player_name)
 {
-    for (Player *player : players)
+    for (Player* player : players)
         if (player->get_name() == player_name)
             return player;
     // throw not found exception
@@ -77,7 +77,7 @@ void FutFan::get_league_data(string file_address)
                 continue;
             }
             int pos_num = ind - 1;
-            vector<string> pos_players = split_line_into_words(lines[line_num][pos_num], NAME_DELIM);
+            vector<string> pos_players = split_line_into_words(lines[line_num][ind], NAME_DELIM);
             for (string player_name : pos_players)
             {
                 add_player(player_name, pos_num);
@@ -97,7 +97,6 @@ void FutFan::update_match_stats(int week_num, vector<string> &data)
 {
     for (int j = 0; j < (int)data.size(); ++j)
     {
-
         if (j == YELLOW_CARD)
         {
             vector<string> yellow_card_player = split_line_into_words(data[j], NAME_DELIM);
@@ -108,7 +107,10 @@ void FutFan::update_match_stats(int week_num, vector<string> &data)
         {
             vector<string> red_card_player = split_line_into_words(data[j], NAME_DELIM);
             for (string player_name : red_card_player)
+            {
+                Player* player = find_player_by_name(player_name);
                 find_player_by_name(player_name)->update_red_card(week_num);
+            }
         }
         if (j == INJURED)
         {
@@ -116,16 +118,21 @@ void FutFan::update_match_stats(int week_num, vector<string> &data)
             for (string player_name : injured_player)
                 find_player_by_name(player_name)->update_injured(week_num);
         }
+        if (j >= SCORES)
+        {
+            vector<string> player_plus_score = split_line_into_words(data[j], SCORE_DELIM);
+            find_player_by_name(player_plus_score[0])->update_score(week_num, stof(player_plus_score[1]));
+        }
     }
 }
 
 void FutFan::update_week_stats(int week_num)
 {
-    // for (Player* player : players)
-    // {
-    //     player->
-    // }
-    string file_name = WEEK_STATS_FOLDER + "week_" + to_string(week_num);
+    for (Player* player : players)
+    {
+        player->add_week_stats(week_num);
+    }
+    string file_name = WEEK_STATS_FOLDER + "week_" + to_string(week_num) + ".csv";
     vector<vector<string>> week = make_file_lines(file_name, COMMA);
     for (int i = 0; i < (int)week.size(); ++i)
     {

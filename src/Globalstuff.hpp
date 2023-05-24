@@ -23,6 +23,7 @@ const string ROLE_ABB_NAME[] = {"gk", "df", "md", "fw"};
 
 const char COMMA = ',';
 const char NAME_DELIM = ';';
+const char SCORE_DELIM = ':';
 
 const int RED_CARD_SUS_DAYS = 1;
 const int YELLOW_CARD_SUS_DAYS = 1;
@@ -34,7 +35,7 @@ const int DF_CNT = 2;
 const int MD_CNT = 1;
 const int FW_CNT = 1;
 const string LEAGUE_ADDRESS = "data/premier_league.csv";
-const string WEEK_STATS_FOLDER = "data/week_stats/";
+const string WEEK_STATS_FOLDER = "data/weeks_stats/";
 
 vector <string> split_line_into_words(string line, char delimiter);
 

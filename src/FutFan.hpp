@@ -18,8 +18,8 @@ public:
     void update_match_stats(int week_num, vector <string> &data);
     void update_week_stats( int week_num);
     void debug(){
-        for (Club* club : clubs)
-            club->debug();
+        for (Player* player : players)
+            player->debug();
     };
 private:
     vector <Player*> players;

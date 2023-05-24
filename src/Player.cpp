@@ -24,26 +24,37 @@ void Player::add_week_stats(int week_num)
 
 void Player::update_yellow_card(int week_num)
 {
+    week_num--;
     cnt_yellow_cards++;
     weekstats[week_num].set_yellow_card();
 }
 
 void Player::update_red_card(int week_num)
 {
+    week_num--;
     weekstats[week_num].set_red_card();
 }
 
 void Player::update_injured(int week_num)
 {
+    week_num--;
     weekstats[week_num].set_injured();
 }
+
+void Player::update_score(int week_num, float week_score)
+{
+    week_num--;
+    weekstats[week_num].set_score(week_score);
+}
+
+
 bool Player::is_available(int week_num)
 {
-
+    week_num--;
     for (int i = week_num-1; i >= max(0, week_num-RED_CARD_SUS_DAYS) ; --i)
     {
         if(weekstats[i].get_has_red_card()){
-            cnt_yellow_cards=0;
+            cnt_yellow_cards = 0;
             return false;
         }
     }
@@ -55,7 +66,7 @@ bool Player::is_available(int week_num)
     }
     if(cnt_yellow_cards == 3)
     {
-        cnt_yellow_cards=0;
+        cnt_yellow_cards = 0;
         return false;
     }
     return true;

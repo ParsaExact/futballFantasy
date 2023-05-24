@@ -6,6 +6,8 @@ vector <string> split_line_into_words(string line, char delimiter)
     string word;
     vector <string> words;
     while (getline(str_line, word, delimiter)){
+        if (word.back() == 13)
+            word.pop_back();
         words.push_back(word);
     }
     return words;
