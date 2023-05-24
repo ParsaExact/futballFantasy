@@ -1,13 +1,14 @@
 #ifndef _GLOBALSTUFF_HPP_
 #define _GLOBALSTUFF_HPP_
 
-#include<iostream>
-#include<vector>
-#include<string>
-#include<fstream>
-#include<dirent.h>
-#include<sstream>
-#include<map>
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+#include <dirent.h>
+#include <sstream>
+#include <map>
+#include <algorithm>
 #include "Exception.hpp"
 
 
@@ -34,6 +35,9 @@ const int GK_CNT = 1;
 const int DF_CNT = 2;
 const int MD_CNT = 1;
 const int FW_CNT = 1;
+const int DRAW_POINT = 1;
+const int WIN_POINT = 3;
+const int LOSS_POINT = 0;
 const string LEAGUE_ADDRESS = "data/premier_league.csv";
 const string WEEK_STATS_FOLDER = "data/weeks_stats/";
 

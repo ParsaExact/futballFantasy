@@ -4,6 +4,9 @@
 #include "Globalstuff.hpp"
 #include "Club.hpp"
 #include "Player.hpp"
+#include "Match.hpp"
+
+bool cmp(Club* i, Club* j);
 
 class FutFan {
 public:
@@ -17,9 +20,11 @@ public:
     void make_new_week_stats(int week_num);
     void update_match_stats(int week_num, vector <string> &data);
     void update_week_stats( int week_num);
+    string output_standing();
 private:
     vector <Player*> players;
     vector <Club*> clubs;
+    vector<vector<Match>> all_matches;
     vector<vector<string>> make_file_lines(string file_address, char delimiter);
 };
 

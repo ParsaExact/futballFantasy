@@ -9,16 +9,15 @@ class Club
 public:
     Club(string _name);
     string get_name();
+    int get_points();
+    int get_goals_scored();
+    int get_goals_conceded();
+    void update_standing(int goals_scored_, int goals_conceded_, int point_);
     void add_player(int pos, Player* p_player);
-    void debug(){
-        cout << "Club name: " << name << endl;
-        for (int i = 0; i < ROLE_CNT; ++i){
-            cout << "ROLE: " << ROLE_NAME[i] << endl;
-            for (Player* player : players[i])
-                player->debug();
-        }
-    };
 private:
+    int points;
+    int goals_scored;
+    int goals_conceded;
     string name;
     vector<Player*> players[ROLE_CNT];
 };
