@@ -4,6 +4,7 @@
 #include "Globalstuff.hpp"
 #include "Club.hpp"
 #include "Player.hpp"
+#include "Team.hpp"
 #include "Match.hpp"
 
 bool cmp(Club* i, Club* j);
@@ -14,6 +15,7 @@ public:
     void get_league_data(string file_address);
     Player* find_player_by_name(string player_name);
     Club* find_club_by_name(string club_name);
+    Team* find_team_by_name(string team_name);
     void add_player(string player_name, int role);
     void add_club(string club_name);
     void add_player_to_club(string club_name, string player_name);
@@ -23,11 +25,14 @@ public:
     string output_standing();
     void team_of_the_week(int week_num);
     void matchs_of_the_week(int week_num);
+    bool check_team(string team_name);
+    void update_team(string team , string pass);
 private:
     vector <Player*> players;
     vector <Club*> clubs;
     vector<vector<Match>> all_matches;
     vector<vector<string>> make_file_lines(string file_address, char delimiter);
+    vector<Team*> teams;
 };
 
 #endif

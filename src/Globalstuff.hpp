@@ -41,6 +41,8 @@ const int WIN_POINT = 3;
 const int LOSS_POINT = 0;
 const string LEAGUE_ADDRESS = "data/premier_league.csv";
 const string WEEK_STATS_FOLDER = "data/weeks_stats/";
+const string ADMIN_USER_NAME = "admin";
+const string ADMIN_PASSWORD = "123456";
 
 vector <string> split_line_into_words(string line, char delimiter);
 

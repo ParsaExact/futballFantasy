@@ -35,14 +35,23 @@ Player *FutFan::find_player_by_name(string player_name)
     for (Player *player : players)
         if (player->get_name() == player_name)
             return player;
-    // throw not found exception
+    throw NotFound();
 }
 Club *FutFan::find_club_by_name(string club_name)
 {
     for (Club *club : clubs)
         if (club->get_name() == club_name)
             return club;
-    // throw not found exception
+    throw NotFound();
+}
+
+
+Team *FutFan::find_team_by_name(string team_name)
+{
+    for (Team *team : teams)
+        if (team->get_team_name() == team_name)
+            return team;
+    throw NotFound();
 }
 
 void FutFan::add_player_to_club(string club_name, string player_name)
@@ -50,7 +59,7 @@ void FutFan::add_player_to_club(string club_name, string player_name)
     Club *p_club = find_club_by_name(club_name);
     Player *p_player = find_player_by_name(player_name);
     p_club->add_player(p_player->get_role(), p_player);
-    // throw not found exception
+    // throw NotFound();
 }
 
 vector<vector<string>> FutFan::make_file_lines(string file_address, char delimiter)
@@ -75,6 +84,7 @@ void FutFan::add_club(string club_name)
 
 void FutFan::get_league_data(string file_address)
 {
+
     vector<vector<string>> lines;
     lines = make_file_lines(file_address, COMMA);
     for (int line_num = 0; line_num < (int)lines.size(); ++line_num)
@@ -254,4 +264,17 @@ void FutFan::matchs_of_the_week(int week_num)
     {
         cout << match.home << SPACE << match.home_goals << " | " << match.away << SPACE << match.away_goals << endl;
     }
+}
+
+bool FutFan::check_team(string team)
+{
+    for (Team* t : teams)
+        if(t->get_team_name() == team)
+            return false;
+    return true;
+}
+
+void FutFan::update_team(string team , string pass)
+{
+    teams.push_back(new Team(team , pass));
 }
