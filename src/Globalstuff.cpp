@@ -24,7 +24,7 @@ int find_int_role(string str_role)
 string convert_underline_to_space(string team)
 {
     for( int i = 0 ; i < team.size() ; ++i)
-        if(team[i] == COMMA)
+        if(team[i] == CLUB_DELIM)
             team[i] = SPACE;
     return team;
 }

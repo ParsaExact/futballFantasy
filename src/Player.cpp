@@ -80,3 +80,15 @@ float Player::find_player_score(int week_num)
 {
     return weekstats[week_num-1].get_score();
 }
+
+float Player::calculate_avarage_score()
+{
+    float sum = 0;
+    int cnt = 0;
+    for(WeekStats week : weekstats)
+    {
+        cnt++;
+        sum+=week.get_score();
+    }
+    return sum / cnt;
+}

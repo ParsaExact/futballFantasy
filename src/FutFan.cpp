@@ -45,7 +45,6 @@ Club *FutFan::find_club_by_name(string club_name)
     throw NotFound();
 }
 
-
 Team *FutFan::find_team_by_name(string team_name)
 {
     for (Team *team : teams)
@@ -156,10 +155,14 @@ void FutFan::update_match_stats(int week_num, vector<string> &data)
             for (string player_name : injured_player)
                 find_player_by_name(player_name)->update_injured(week_num);
         }
-        if (j >= SCORES)
+        if (j == SCORES)
         {
-            vector<string> player_plus_score = split_line_into_words(data[j], SCORE_DELIM);
-            find_player_by_name(player_plus_score[0])->update_score(week_num, stof(player_plus_score[1]));
+            vector<string> player_plus_score = split_line_into_words(data[j], NAME_DELIM);
+            for (int i = 0; i < player_plus_score.size() ; i++)
+            {
+                vector<string> player_and_score = split_line_into_words( player_plus_score[i] , SCORE_DELIM);
+                find_player_by_name(player_and_score[0])->update_score(week_num, stof(player_and_score[1]));
+            }
         }
     }
     all_matches[week_num - 1].push_back(Match(home_team, away_team, home_team_score, away_team_score));
@@ -268,13 +271,13 @@ void FutFan::matchs_of_the_week(int week_num)
 
 bool FutFan::check_team(string team)
 {
-    for (Team* t : teams)
-        if(t->get_team_name() == team)
+    for (Team *t : teams)
+        if (t->get_team_name() == team)
             return false;
     return true;
 }
 
-void FutFan::update_team(string team , string pass)
+void FutFan::update_team(string team, string pass)
 {
-    teams.push_back(new Team(team , pass));
+    teams.push_back(new Team(team, pass));
 }

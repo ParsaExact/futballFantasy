@@ -16,6 +16,7 @@ public:
     void add_week_stats(int week_num);
     void update_availability(int week_num);
     float find_player_score(int week_num);
+    float calculate_avarage_score();
 
 private:
     string name;

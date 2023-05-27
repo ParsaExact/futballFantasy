@@ -2,19 +2,47 @@
 #include "Globalstuff.hpp"
 #include "FutFan.hpp"
 #include "Exception.hpp"
+#include "Player.hpp"
+
+bool HandleCommands::is_command_valid(string command_type)
+{
+    return command_type == "PUT" || command_type == "DELETE" || command_type == "POST" || command_type == "GET";
+}
+
+void HandleCommands::print_players(vector<Player*> club_players)
+{
+    cout << "list of players:" <<endl;
+    for(int i = 0 ; i < club_players.size() ; ++i)
+        cout << i << ". name: " << club_players[i]->get_name() << " | role: " << club_players[i]->get_role() << " | score: " << club_players[i]->calculate_avarage_score() << endl;
+
+}
 void HandleCommands::get_commands()
 {
     FutFan futfan;
     futfan.get_league_data(LEAGUE_ADDRESS);
     futfan.update_week_stats(1);
     string line;
-    int cur_week = 1;
+    int cur_week = 1; // change to 0 later
     bool admin_signed_in = false, transfer_window = false;
     Team *cur_team = NULL;
     while (getline(cin, line))
     {
         vector<string> command_words = split_line_into_words(line, SPACE);
+        string command_type = command_words[0];
         string command = command_words[1];
+        bool command_wrong = false;
+        try
+        {
+            if (!is_command_valid(command_type))
+                throw BadRequest();
+        }
+        catch (BadRequest &bad)
+        {
+            cout << bad.out() << endl;
+            command_wrong = true;
+        }
+        if(command_wrong)
+            continue;
         if (command == "team_of_the_week")
         {
             if (command_words.size() == 5)
@@ -22,10 +50,7 @@ void HandleCommands::get_commands()
                 try
                 {
                     if (stoi(command_words[4]) > cur_week)
-                    {
                         throw BadRequest();
-                        continue;
-                    }
                     futfan.team_of_the_week(stoi(command_words[4]));
                 }
                 catch (BadRequest &bad)
@@ -37,7 +62,7 @@ void HandleCommands::get_commands()
         }
         if (command == "league_standings")
             cout << futfan.output_standing();
-        if (command == "players") //not completed
+        if (command == "players") // not completed
         {
             try
             {
@@ -45,22 +70,41 @@ void HandleCommands::get_commands()
                 string team_name = convert_underline_to_space(command_words[4]);
                 Club *club = futfan.find_club_by_name(team_name);
                 bool ranked = false, with_position = false;
-                if (command_words.back() == "rank")
+                if (command_words.back() == "rank"){
                     ranked = true;
+                    cout<<"ok"<<endl;
+                }
                 if (command_words.size() == 7 || (command_words.size() == 6 && !ranked))
                     for (int i = 0; i < ROLE_CNT; ++i)
                         if (ROLE_ABB_NAME[i] == command_words[5])
                             role = command_words[5];
                 if (role == "")
                     throw BadRequest();
-                with_position = true;
+                else
+                {
+                    with_position = true;
+                    cout<<"pos"<<endl;
+                }
                 vector<Player *> club_players = club->players[ROLE_CNT];
-                // if(ranked)
-                //     for(int i = 0 ; i<club_players.size() ; ++i)
-                //     {
-                //         for(int j = i+1 ; j < club_players.size() ; ++j)
-                //             if(club_players[i].)
-                //     }
+                if (ranked)
+                    for (int i = 0; i < club_players.size(); ++i)
+                    {
+                        for (int j = i + 1; j < club_players.size(); ++j)
+                        {
+                            if (club_players[i]->calculate_avarage_score() > club_players[i]->calculate_avarage_score())
+                                swap(club_players[i], club_players[j]);
+                            else if (club_players[i]->calculate_avarage_score() == club_players[i]->calculate_avarage_score() && club_players[i]->get_name() > club_players[j]->get_name())
+                                swap(club_players[i], club_players[j]);
+                        }
+                    }
+                if (with_position)
+                    for (int i = 0; i < club_players.size(); ++i)
+                        if (ROLE_ABB_NAME[club_players[i]->get_role()] != command_words[5])
+                        {
+                            club_players.erase(club_players.begin() + i);
+                            i--;
+                        }
+                print_players(club_players);
             }
             catch (NotFound &not_found)
             {

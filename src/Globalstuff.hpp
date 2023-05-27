@@ -26,6 +26,8 @@ const char COMMA = ',';
 const char SPACE = ' ';
 const char NAME_DELIM = ';';
 const char SCORE_DELIM = ':';
+const char CLUB_DELIM = '_';
+
 
 const int RED_CARD_SUS_DAYS = 1;
 const int YELLOW_CARD_SUS_DAYS = 1;
