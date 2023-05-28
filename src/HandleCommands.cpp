@@ -72,18 +72,18 @@ void HandleCommands::get_commands()
                 bool ranked = false, with_position = false;
                 if (command_words.back() == "rank"){
                     ranked = true;
-                    cout<<"ok"<<endl;
                 }
                 if (command_words.size() == 7 || (command_words.size() == 6 && !ranked))
                     for (int i = 0; i < ROLE_CNT; ++i)
                         if (ROLE_ABB_NAME[i] == command_words[5])
                             role = command_words[5];
+                if(command_words.size() == 5 || ranked)
+                    role = "no roles";
                 if (role == "")
                     throw BadRequest();
                 else
                 {
                     with_position = true;
-                    cout<<"pos"<<endl;
                 }
                 vector<Player *> club_players = club->players[ROLE_CNT];
                 if (ranked)
@@ -241,5 +241,9 @@ void HandleCommands::get_commands()
                 cout << permission.out() << endl;
             }
         }
+        // if (command == "sell_player")
+        // {
+        //     cur_team
+        // }
     }
 }

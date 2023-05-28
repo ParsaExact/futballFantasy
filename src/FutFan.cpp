@@ -83,7 +83,6 @@ void FutFan::add_club(string club_name)
 
 void FutFan::get_league_data(string file_address)
 {
-
     vector<vector<string>> lines;
     lines = make_file_lines(file_address, COMMA);
     for (int line_num = 0; line_num < (int)lines.size(); ++line_num)
