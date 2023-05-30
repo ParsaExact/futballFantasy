@@ -5,12 +5,10 @@
 class Team
 {
 public:
-    Team(string team_name , string pass);
+    Team(string team_name);
     string get_team_name();
-    string get_team_password();
 private:
     string team_name;
-    string password;
     vector<Player*> squad;
 };
 

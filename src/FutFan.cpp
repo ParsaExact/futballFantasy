@@ -30,6 +30,13 @@ void FutFan::add_player(string player_name, int role)
     players.push_back(new Player(player_name, role));
 }
 
+Team* FutFan::add_team(string team_name)
+{
+    Team* team = new Team(team_name);
+    teams.push_back(team);
+    return team;
+}
+
 Player *FutFan::find_player_by_name(string player_name)
 {
     for (Player *player : players)
@@ -268,15 +275,10 @@ void FutFan::matchs_of_the_week(int week_num)
     }
 }
 
-bool FutFan::check_team(string team)
+bool FutFan::check_team(string team_name)
 {
-    for (Team *t : teams)
-        if (t->get_team_name() == team)
+    for (Team* t : teams)
+        if (t->get_team_name() == team_name)
             return false;
     return true;
-}
-
-void FutFan::update_team(string team, string pass)
-{
-    teams.push_back(new Team(team, pass));
 }

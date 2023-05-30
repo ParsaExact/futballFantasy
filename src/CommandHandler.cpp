@@ -1,49 +1,67 @@
-#include "HandleCommands.hpp"
-#include "Globalstuff.hpp"
-#include "FutFan.hpp"
-#include "Exception.hpp"
-#include "Player.hpp"
+#include "CommandHandler.hpp"
 
-bool HandleCommands::is_command_valid(string command_type)
+CommandHandler::CommandHandler(FutFan* futfan_)
 {
-    return command_type == "PUT" || command_type == "DELETE" || command_type == "POST" || command_type == "GET";
+    futfan = futfan_;
+    session = new Session();
 }
 
-void HandleCommands::print_players(vector<Player*> club_players)
+int CommandHandler::find_command_num(vector <string> command_words)
+{
+    if ((int)command_words.size() < 2)
+        throw BadRequest();
+    int cnt = 0;
+    for (CommandType cmd : COMMAND_TYPE)
+    {
+        if (cmd.command_class == command_words[0] && cmd.command_type == command_words[1])
+            return cnt;
+        cnt++;
+    }
+    throw BadRequest();
+}
+
+void CommandHandler::print_players(vector<Player*> club_players)
 {
     cout << "list of players:" <<endl;
     for(int i = 0 ; i < club_players.size() ; ++i)
         cout << i << ". name: " << club_players[i]->get_name() << " | role: " << club_players[i]->get_role() << " | score: " << club_players[i]->calculate_avarage_score() << endl;
-
 }
-void HandleCommands::get_commands()
+
+string CommandHandler::signup_user(vector <string> command)
 {
-    FutFan futfan;
-    futfan.get_league_data(LEAGUE_ADDRESS);
-    futfan.update_week_stats(1);
+    if ((int)command.size() != 7 || command[2] != "?" || command[3] != "team_name" || command[5] != "password")
+        return BAD_REQUEST;
+    string team_name = command[4];
+    string password = command[6];
+    if (session->is_admin_logged_in || session->is_user_logged_in)
+        return PERMISSION_DENIED;
+    if (!session->is_username_available(team_name))
+        return BAD_REQUEST;
+    session->add_user(team_name, password, futfan->add_team(team_name));
+    return OK;
+}
+
+void CommandHandler::handle_commands()
+{
     string line;
-    int cur_week = 1; // change to 0 later
-    bool admin_signed_in = false, transfer_window = false;
-    Team *cur_team = NULL;
     while (getline(cin, line))
     {
         vector<string> command_words = split_line_into_words(line, SPACE);
-        string command_type = command_words[0];
-        string command = command_words[1];
-        bool command_wrong = false;
+        int command_num;
         try
         {
-            if (!is_command_valid(command_type))
-                throw BadRequest();
-        }
-        catch (BadRequest &bad)
-        {
-            cout << bad.out() << endl;
-            command_wrong = true;
-        }
-        if(command_wrong)
+            command_num = find_command_num(command_words);
+        } catch(BadRequest& err) {
+            cout << err.out() << endl;
             continue;
-        if (command == "team_of_the_week")
+        }
+
+        if (command_num == SIGNUP)
+        {
+            cout << signup_user(command_words) << endl;
+        }
+
+        /*if (command == "team_of_the_week")
         {
             if (command_words.size() == 5)
             {
@@ -245,5 +263,6 @@ void HandleCommands::get_commands()
         // {
         //     cur_team
         // }
+        */
     }
 }
