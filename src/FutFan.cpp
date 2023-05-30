@@ -52,9 +52,9 @@ Club *FutFan::find_club_by_name(string club_name)
     throw NotFound();
 }
 
-Team *FutFan::find_team_by_name(string team_name)
+Team* FutFan::find_team_by_name(string team_name)
 {
-    for (Team *team : teams)
+    for (Team* team : teams)
         if (team->get_team_name() == team_name)
             return team;
     throw NotFound();

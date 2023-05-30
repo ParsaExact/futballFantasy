@@ -1,1 +1,16 @@
-POST signup
+POST signup ? team_name parsa password 1324
+POST signup ? team_name asghar password 1452
+POST signup ? fdkl;ajfalkd dlkvja;lkdvja;kl
+POST signup ? team_name parsa password 2121
+POST login ? team_name parsa password 1324
+POST login ? team_name parsa password 1324
+POST register_admin ? username admin password 123456
+POST logout
+POST register_admin ? username admin password 123456
+POST logout
+POST open_transfer_window
+POST dlkfj;alkvdaklm
+POST register_admin ? username admin password 123456
+POST signup ? team_name ahmad password 21391
+POST close_transfer_window
+POST open_transfer_window

@@ -41,6 +41,78 @@ string CommandHandler::signup_user(vector <string> command)
     return OK;
 }
 
+string CommandHandler::login_user(vector <string> command)
+{
+    if ((int)command.size() != 7 || command[2] != "?" || command[3] != "team_name" || command[5] != "password")
+        return BAD_REQUEST;
+    string team_name = command[4];
+    string password = command[6];
+    if (session->is_admin_logged_in || session->is_user_logged_in)
+        return PERMISSION_DENIED;
+    try
+    {
+        session->login_user(team_name, password);
+    } catch (NotFound &err){
+        return err.out();
+    } catch (PermissionDenied &err){
+        return err.out();
+    }
+    return OK;
+}
+
+string CommandHandler::logout_user(vector <string> command)
+{
+    if ((int)command.size() != 2)
+        return BAD_REQUEST;
+    if (!session->is_admin_logged_in && !session->is_user_logged_in)
+        return PERMISSION_DENIED;
+    session->logout_user();
+    return OK;
+}
+
+string CommandHandler::register_admin(vector <string> command)
+{
+    if ((int)command.size() != 7 || command[2] != "?" || command[3] != "username" || command[5] != "password")
+        return BAD_REQUEST;
+    string username = command[4];
+    string password = command[6];
+    if (session->is_admin_logged_in || session->is_user_logged_in)
+        return PERMISSION_DENIED;
+    try
+    {
+        session->register_admin(username, password);
+    } catch (BadRequest &err){
+        return err.out();
+    }
+    return OK;
+}
+
+string CommandHandler::close_transfer_window(vector <string> command)
+{
+    if ((int)command.size() != 2)
+        return BAD_REQUEST;
+    try
+    {
+        session->close_transfer_window();
+    } catch (PermissionDenied &err){
+        return err.out();
+    }
+    return OK;
+}
+
+string CommandHandler::open_transfer_window(vector <string> command)
+{
+    if ((int)command.size() != 2)
+        return BAD_REQUEST;
+    try
+    {
+        session->open_transfer_window();
+    } catch (PermissionDenied &err){
+        return err.out();
+    }
+    return OK;
+}
+
 void CommandHandler::handle_commands()
 {
     string line;
@@ -57,9 +129,22 @@ void CommandHandler::handle_commands()
         }
 
         if (command_num == SIGNUP)
-        {
             cout << signup_user(command_words) << endl;
-        }
+        
+        if (command_num == LOGIN)
+            cout << login_user(command_words) << endl;
+
+        if (command_num == LOGOUT)
+            cout << logout_user(command_words) << endl;
+
+        if (command_num == REGISTER_ADMIN)
+            cout << register_admin(command_words) << endl;
+        
+        if (command_num == OPEN_TRANSFER_WINDOW)
+            cout << open_transfer_window(command_words) << endl;
+        
+        if (command_num == CLOSE_TRANSFER_WINDOW)
+            cout << close_transfer_window(command_words) << endl;
 
         /*if (command == "team_of_the_week")
         {

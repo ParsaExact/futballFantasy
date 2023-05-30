@@ -6,25 +6,26 @@
 
 using namespace std;
 
-class PermissionDenied 
+
+class PermissionDenied
 {
 public:
     string out();
 };
 
-class NotFound 
+class NotFound
 {
 public:
     string out();
 };
 
-class BadRequest 
+class BadRequest
 {
 public:
     string out();
 };
 
-class Empty 
+class Empty
 {
 public:
     string out();

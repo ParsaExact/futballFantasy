@@ -10,7 +10,12 @@ class CommandHandler
 public:
     CommandHandler(FutFan* futfan_);
     void handle_commands();
-    int find_command_num(vector <string> command_words);
+    string login_user(vector <string> command);
+    string logout_user(vector <string> command);
+    string register_admin(vector <string> command);
+    string close_transfer_window(vector <string> command);
+    string open_transfer_window(vector <string> command);
+    int find_command_num(vector <string> command);
     string signup_user(vector <string> command);
     void print_players(vector<Player*> club_players);
 private:
