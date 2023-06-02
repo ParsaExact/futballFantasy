@@ -28,3 +28,10 @@ string convert_underline_to_space(string team)
             team[i] = SPACE;
     return team;
 }
+
+template<typename T>
+vector<T> create_copy(vector<T> const &vec)
+{
+    vector<T> v(vec);
+    return v;
+}

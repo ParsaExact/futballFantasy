@@ -17,7 +17,10 @@ public:
     string open_transfer_window(vector <string> command);
     int find_command_num(vector <string> command);
     string signup_user(vector <string> command);
-    void print_players(vector<Player*> club_players);
+    string get_league_standing(vector <string> command);
+    string get_team_of_the_week(vector <string> command);
+    string get_players(vector <string> command);
+    string get_match_results(vector <string> command);
 private:
     FutFan* futfan;
     Session* session;

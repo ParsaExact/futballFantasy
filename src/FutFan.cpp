@@ -14,6 +14,15 @@ bool cmp(Club *i, Club *j)
     return true;
 }
 
+bool cmp_player(Player *i, Player *j)
+{
+    if (i->calculate_avarage_score() < j->calculate_avarage_score())
+        return false;
+    if (i->calculate_avarage_score() == j->calculate_avarage_score() && i->get_name() < j->get_name())
+        return false;
+    return true;
+}
+
 FutFan::~FutFan()
 {
     for (Player *player : players)
@@ -30,9 +39,9 @@ void FutFan::add_player(string player_name, int role)
     players.push_back(new Player(player_name, role));
 }
 
-Team* FutFan::add_team(string team_name)
+Team *FutFan::add_team(string team_name)
 {
-    Team* team = new Team(team_name);
+    Team *team = new Team(team_name);
     teams.push_back(team);
     return team;
 }
@@ -52,9 +61,9 @@ Club *FutFan::find_club_by_name(string club_name)
     throw NotFound();
 }
 
-Team* FutFan::find_team_by_name(string team_name)
+Team *FutFan::find_team_by_name(string team_name)
 {
-    for (Team* team : teams)
+    for (Team *team : teams)
         if (team->get_team_name() == team_name)
             return team;
     throw NotFound();
@@ -164,9 +173,9 @@ void FutFan::update_match_stats(int week_num, vector<string> &data)
         if (j == SCORES)
         {
             vector<string> player_plus_score = split_line_into_words(data[j], NAME_DELIM);
-            for (int i = 0; i < player_plus_score.size() ; i++)
+            for (int i = 0; i < player_plus_score.size(); i++)
             {
-                vector<string> player_and_score = split_line_into_words( player_plus_score[i] , SCORE_DELIM);
+                vector<string> player_and_score = split_line_into_words(player_plus_score[i], SCORE_DELIM);
                 find_player_by_name(player_and_score[0])->update_score(week_num, stof(player_and_score[1]));
             }
         }
@@ -226,8 +235,9 @@ string FutFan::output_standing()
     return out.str();
 }
 
-void FutFan::team_of_the_week(int week_num)
+string FutFan::team_of_the_week(int week_num)
 {
+    ostringstream out;
     vector<string> team_of_week = {"", "", "", "", ""};
     float goalkeeper_max = 0, defender_max1 = 0, defender_max2 = 0;
     float midfielder_max = 0, forward_max = 0;
@@ -259,25 +269,55 @@ void FutFan::team_of_the_week(int week_num)
             team_of_week[4] = player->get_name();
         }
     }
-    cout << "team of the week:" << endl
-         << ROLE_NAME[0] << ": " << team_of_week[0] << " | score: " << goalkeeper_max << endl
-         << ROLE_NAME[1] << "1: " << team_of_week[1] << " | score: " << defender_max1 << endl
-         << ROLE_NAME[1] << "2: " << team_of_week[2] << " | score: " << defender_max2 << endl
-         << ROLE_NAME[2] << ": " << team_of_week[3] << " | score: " << midfielder_max << endl
-         << ROLE_NAME[3] << ": " << team_of_week[4] << " | score: " << forward_max << endl;
+    out << "team of the week:" << endl
+        << ROLE_NAME[0] << ": " << team_of_week[0] << " | score: " << goalkeeper_max << endl
+        << ROLE_NAME[1] << "1: " << team_of_week[1] << " | score: " << defender_max1 << endl
+        << ROLE_NAME[1] << "2: " << team_of_week[2] << " | score: " << defender_max2 << endl
+        << ROLE_NAME[2] << ": " << team_of_week[3] << " | score: " << midfielder_max << endl
+        << ROLE_NAME[3] << ": " << team_of_week[4] << " | score: " << forward_max << endl;
+    return out.str();
 }
 
-void FutFan::matchs_of_the_week(int week_num)
+string FutFan::print_players(vector<Player *> club_players)
 {
+    ostringstream out;
+    out << "list of players:" << endl;
+    for (int i = 0; i < club_players.size(); ++i)
+        out << i << ". name: " << club_players[i]->get_name() << " | role: " << club_players[i]->get_role() << " | score: " << club_players[i]->calculate_avarage_score() << endl;
+    return out.str();
+}
+
+string FutFan::output_players(bool ranked, int position, Club *club)
+{
+    if (position == -1 && !ranked)
+        return print_players(players);
+    if (ranked && position == -1)
+    {
+        sort(players.begin(), players.end(), cmp_player);
+        return print_players(players);
+    }
+    if (ranked)
+        sort(club->players[position].begin(), club->players[position].end(), cmp_player);
+        return print_players(club->players[position]);
+    if (position != -1)
+    {
+        return print_players(club->players[position]);
+    }
+}
+
+string FutFan::matchs_of_the_week(int week_num)
+{
+    ostringstream out;
     for (Match match : all_matches[week_num - 1])
     {
-        cout << match.home << SPACE << match.home_goals << " | " << match.away << SPACE << match.away_goals << endl;
+        out << match.home << SPACE << match.home_goals << " | " << match.away << SPACE << match.away_goals << endl;
     }
+    return out.str();
 }
 
 bool FutFan::check_team(string team_name)
 {
-    for (Team* t : teams)
+    for (Team *t : teams)
         if (t->get_team_name() == team_name)
             return false;
     return true;

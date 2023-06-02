@@ -19,9 +19,9 @@ public:
     bool is_admin_logged_in;
     bool is_user_logged_in;
     bool is_transfer_window_open;
+    int current_week_num;
 
 private:
-    int current_week_num;
     string admin_username;
     string admin_password;
     User current_user;

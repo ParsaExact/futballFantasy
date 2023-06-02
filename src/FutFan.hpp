@@ -24,8 +24,10 @@ public:
     void update_match_stats(int week_num, vector <string> &data);
     void update_week_stats( int week_num);
     string output_standing();
-    void team_of_the_week(int week_num);
-    void matchs_of_the_week(int week_num);
+    string team_of_the_week(int week_num);
+    string output_players(bool ranked , int position , Club *club);
+    string print_players(vector <Player*> club_players);
+    string matchs_of_the_week(int week_num);
     bool check_team(string team_name);
     void update_team(string team , string pass);
 private:
