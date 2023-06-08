@@ -80,7 +80,6 @@ float Player::find_player_score(int week_num)
 {
     if(!week_num)
         return 0.0;
-    cout<<week_num;
     return weekstats[week_num-1].get_score();
 }
 
@@ -96,4 +95,9 @@ float Player::calculate_avarage_score()
     if(!cnt)
         return 0;
     return sum / cnt;
+}
+
+bool Player::is_available()
+{
+    return can_play;
 }

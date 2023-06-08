@@ -25,10 +25,12 @@ bool cmp_player(Player *i, Player *j)
 
 FutFan::~FutFan()
 {
-    for (Player *player : players)
+    for (Player* player : players)
         delete player;
-    for (Club *club : clubs)
+    for (Club* club : clubs)
         delete club;
+    for (Team* team : teams)
+        delete team;
 }
 
 void FutFan::add_player(string player_name, int role)
@@ -201,6 +203,8 @@ void FutFan::update_week_stats(int week_num)
 {
     vector<Match> empty_vec;
     all_matches.push_back(empty_vec);
+    for (Team* team : teams)
+        team->update_new_week(week_num);
     for (Player *player : players)
     {
         player->add_week_stats(week_num);
@@ -283,7 +287,7 @@ string FutFan::print_players(vector<Player *> club_players)
     ostringstream out;
     out << "list of players:" << endl;
     for (int i = 0; i < club_players.size(); ++i)
-        out << i << ". name: " << club_players[i]->get_name() << " | role: " << club_players[i]->get_role() << " | score: " << club_players[i]->calculate_avarage_score() << endl;
+        out << i << ". name: " << club_players[i]->get_name() << " | role: " << ROLE_ABB_NAME[club_players[i]->get_role()] << " | score: " << club_players[i]->calculate_avarage_score() << endl;
     return out.str();
 }
 
@@ -321,4 +325,9 @@ bool FutFan::check_team(string team_name)
         if (t->get_team_name() == team_name)
             return false;
     return true;
+}
+
+void FutFan::pass_week(int week_num)
+{
+    update_week_stats(week_num);
 }

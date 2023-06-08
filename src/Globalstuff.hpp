@@ -24,6 +24,7 @@ enum COMMAND_TYPE_NUM {TEAM_OF_THE_WEEK, PLAYERS, LEAGUE_STANDINGS, USERS_RANKIN
 
 const string ROLE_NAME[] = {"GoalKeeper", "Defender", "Midfielder", "Forward"};
 const string ROLE_ABB_NAME[] = {"gk", "df", "md", "fw"};
+const string SQUAD_POS_STR[] = {"Goalkeeper", "Defender1", "Defender2", "Midfielder", "Striker"};
 
 struct CommandType {
     string command_class;
@@ -31,22 +32,24 @@ struct CommandType {
 };
 
 const vector <CommandType> COMMAND_TYPE = {
-    {"GET", "team_of_the_week"},
-    {"GET", "players"},
-    {"GET", "league_standings"},
+    {"GET", "team_of_the_week"}, //done
+    {"GET", "players"}, //done
+    {"GET", "league_standings"}, //done
     {"GET", "users_ranking"},
-    {"GET", "matches_result_league"},
-    {"POST", "signup"},
-    {"POST", "login"},
-    {"POST", "register_admin"},
-    {"POST", "logout"},
+    {"GET", "matches_result_league"}, //done
+    {"POST", "signup"}, //done
+    {"POST", "login"}, //done
+    {"POST", "register_admin"}, //done
+    {"POST", "logout"}, //done
     {"POST", "sell_player"},
     {"POST", "buy_player"},
-    {"GET", "squad"},
-    {"POST", "close_transfer_window"},
-    {"POST", "open_transfer_window"},
+    {"GET", "squad"}, //done
+    {"POST", "close_transfer_window"}, //done
+    {"POST", "open_transfer_window"}, //done
     {"POST", "pass_week"}
 };
+
+const int SQUAD_POS_NUM[] = { 1, 2, 1, 1};
 
 const char COMMA = ',';
 const char SPACE = ' ';
@@ -55,6 +58,7 @@ const char SCORE_DELIM = ':';
 const char CLUB_DELIM = '_';
 
 
+const int SQUAD_NUM = 5;
 const int RED_CARD_SUS_DAYS = 1;
 const int YELLOW_CARD_SUS_DAYS = 1;
 const int INJURY_SUS_DAYS = 3;
@@ -69,6 +73,10 @@ const int WIN_POINT = 3;
 const int LOSS_POINT = 0;
 const int COMMAND_CLASS_CNT = 4;
 const int COMMAND_TYPE_CNT = 15;
+const int INF = 1e9;
+const int ALLOWED_TRANSFERS_WHEN_COMPLETE = 2;
+
+const string NOT_AVAILABLE_FOR_PURCHASE = "This Player is not available for next week";
 const string LEAGUE_ADDRESS = "data/premier_league.csv";
 const string WEEK_STATS_FOLDER = "data/weeks_stats/";
 const string ADMIN_USERNAME = "admin";

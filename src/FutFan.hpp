@@ -22,14 +22,14 @@ public:
     void add_player_to_club(string club_name, string player_name);
     void make_new_week_stats(int week_num);
     void update_match_stats(int week_num, vector <string> &data);
-    void update_week_stats( int week_num);
+    void update_week_stats(int week_num);
     string output_standing();
     string team_of_the_week(int week_num);
     string output_players(bool ranked , int position , Club *club);
     string print_players(vector <Player*> club_players);
     string matchs_of_the_week(int week_num);
     bool check_team(string team_name);
-    void update_team(string team , string pass);
+    void pass_week(int week_num);
 private:
     vector <Player*> players;
     vector <Club*> clubs;

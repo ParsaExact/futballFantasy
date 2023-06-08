@@ -203,6 +203,113 @@ string CommandHandler::get_match_results(vector<string> command)
     return futfan->matchs_of_the_week(session->current_week_num);
 }
 
+string CommandHandler::buy_player(vector <string> command)
+{
+    if ((int)command.size() < 5 || command[2] != "?" || command[3] != "name")
+        return BAD_REQUEST;
+    if (!session->is_user_logged_in)
+        return PERMISSION_DENIED;
+    if (!session->is_transfer_window_open)
+        return PERMISSION_DENIED;
+    string player_name = command[4];
+    for (int i = 5; i < (int)command.size(); ++i)
+        player_name += " ", player_name += command[i];
+    Player* chosen_player;
+    try
+    {
+        chosen_player = futfan->find_player_by_name(player_name);
+    } catch (NotFound &err){
+        return err.out();
+    }
+    if (!chosen_player->is_available())
+        return NOT_AVAILABLE_FOR_PURCHASE;
+    
+    string current_user_teamname = session->get_current_user_teamname();
+    Team* current_user_team = futfan->find_team_by_name(current_user_teamname);
+
+    try 
+    {
+        current_user_team->buy_player(chosen_player);
+    } catch (BadRequest &err){
+        return err.out();
+    } catch (PermissionDenied &err){
+        return err.out();
+    }
+    return OK;
+}
+
+string CommandHandler::get_squad(vector <string> command)
+{
+    if (!session->is_user_logged_in)
+        return PERMISSION_DENIED;
+    if ((int)command.size() != 3 && (int)command.size() != 5)
+        return BAD_REQUEST;
+    if (command[2] != "?")
+        return BAD_REQUEST;
+    if ((int)command.size() == 5 && command[3] != "fantasy_team")
+        return BAD_REQUEST;
+    Team* chosen_team;
+    try
+    {
+        string team_name = session->get_current_user_teamname();
+        Team* chosen_team = futfan->find_team_by_name(team_name);
+        if ((int)command.size() == 5)
+            chosen_team = futfan->find_team_by_name(command[4]);
+    } catch (NotFound &err){
+        return err.out();
+    }
+    try
+    {
+        return chosen_team->output_squad();
+    } catch (Empty &err){
+        return err.out();
+    }
+}
+
+string CommandHandler::sell_player(vector <string> command)
+{
+    if ((int)command.size() < 5 || command[2] != "?" || command[3] != "name")
+        return BAD_REQUEST;
+    if (!session->is_user_logged_in)
+        return PERMISSION_DENIED;
+    if (!session->is_transfer_window_open)
+        return PERMISSION_DENIED;
+    string player_name = command[4];
+    for (int i = 5; i < (int)command.size(); ++i)
+        player_name += " ", player_name += command[i];
+    
+    string current_user_teamname = session->get_current_user_teamname();
+    Team* current_user_team = futfan->find_team_by_name(current_user_teamname);
+
+    try
+    {
+        current_user_team->sell_player(player_name);
+    } catch(NotFound &err){
+        return err.out();
+    } catch (PermissionDenied &err){
+        return err.out();
+    }
+    return OK;
+}
+
+string CommandHandler::get_users_ranking(vector <string> command)
+{
+    if ((int)command.size() != 2)
+        return BAD_REQUEST;
+    
+    return session->get_users_ranking();
+}
+
+string CommandHandler::pass_week(vector <string> command)
+{
+    if ((int)command.size() != 2)
+        return BAD_REQUEST;
+    if (!session->is_admin_logged_in)
+        return PERMISSION_DENIED;
+    session->current_week_num++;
+    futfan->pass_week(session->current_week_num);
+}
+
 void CommandHandler::handle_commands()
 {
     string line;
@@ -242,63 +349,27 @@ void CommandHandler::handle_commands()
             cout << get_league_standing(command_words);
 
         if (command_num == TEAM_OF_THE_WEEK)
-        {
             cout << get_team_of_the_week(command_words) << endl;
-        }
+
         if (command_num == PLAYERS)
-        {
-            cout << get_players(command_words) << endl;
-        }
+            cout << get_players(command_words);
+
         if (command_num == MATCHES_RESULT_LEAGUE)
-        {
             cout << get_match_results(command_words) << endl;
-        } /*
-         if (command == "pass_week")
-         {
-             try
-             {
-                 if (!admin_signed_in)
-                     throw PermissionDenied();
-                 cur_week++;
-                 cout << "OK" << endl;
-             }
-             catch (PermissionDenied &permission)
-             {
-                 cout << permission.out() << endl;
-             }
-         }
-         if (command == "close_transfer_window")
-         {
-             try
-             {
-                 if (!admin_signed_in)
-                     throw PermissionDenied();
-                 transfer_window = false;
-                 cout << "OK" << endl;
-             }
-             catch (PermissionDenied &permission)
-             {
-                 cout << permission.out() << endl;
-             }
-         }
-         if (command == "open_transfer_window")
-         {
-             try
-             {
-                 if (!admin_signed_in)
-                     throw PermissionDenied();
-                 transfer_window = true;
-                 cout << "OK" << endl;
-             }
-             catch (PermissionDenied &permission)
-             {
-                 cout << permission.out() << endl;
-             }
-         }
-         // if (command == "sell_player")
-         // {
-         //     cur_team
-         // }
-         */
+
+        if (command_num == SQUAD)
+            cout << get_squad(command_words) << endl;
+
+        if (command_num == BUY_PLAYER)
+            cout << buy_player(command_words) << endl;
+        
+        if (command_num == SELL_PLAYER)
+            cout << sell_player(command_words) << endl;
+        
+        if (command_num == USERS_RANKING)
+            cout << get_users_ranking(command_words);
+        
+        if (command_num == PASS_WEEK)
+            cout << pass_week(command_words) << endl;
     }
 }

@@ -1,5 +1,15 @@
 #include "Session.hpp"
 
+bool sort_users_by_total_points(User i, User j)
+{
+    if (i.team->get_total_points() > j.team->get_total_points())
+        return true;
+    if (i.team->get_total_points() == j.team->get_total_points() &&
+        i.username < j.username)
+        return true;
+    return false;
+}
+
 Session::Session()
 {
     current_week_num = 0;
@@ -69,4 +79,21 @@ void Session::add_user(string team_name, string password, Team* team)
     User new_user(team_name, password, team);
     new_user.username = team_name;
     users.push_back(new_user);
+}
+
+string Session::get_current_user_teamname()
+{
+    return current_user.username;
+}
+
+string Session::get_users_ranking()
+{
+    ostringstream out;
+    sort(users.begin(), users.end(), sort_users_by_total_points);
+    for (int i = 1; i <= (int)users.size(); ++i)
+    {
+        out << i << ". team_name: " << users[i].username << " | point: ";
+        out << users[i].team->get_total_points() << endl;
+    }
+    return out.str();
 }

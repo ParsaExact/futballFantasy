@@ -5,6 +5,8 @@
 #include "Team.hpp"
 #include "User.hpp"
 
+bool sort_users_by_total_points(User i, User j);
+
 class Session
 {
 public:
@@ -16,6 +18,8 @@ public:
     void close_transfer_window();
     void logout_user();
     void register_admin(string username, string password);
+    string get_current_user_teamname();
+    string get_users_ranking();
     bool is_admin_logged_in;
     bool is_user_logged_in;
     bool is_transfer_window_open;

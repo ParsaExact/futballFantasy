@@ -16,3 +16,4 @@ POST close_transfer_window
 POST open_transfer_window
 GET players ? team_name Arsenal_FC gk
 GET matches_results_league ? week_num 1
+GET SQUAD ?
