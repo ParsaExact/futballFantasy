@@ -137,11 +137,11 @@ string CommandHandler::get_team_of_the_week(vector<string> command)
         }
         else
             return BAD_REQUEST;
-    if (with_week_num)
+    if (with_week_num){
         if (stoi(command[4]) > session->current_week_num)
             return BAD_REQUEST;
-    if (with_week_num)
         return futfan->team_of_the_week(stoi(command[4]));
+    }
     return futfan->team_of_the_week(session->current_week_num);
 }
 
@@ -223,11 +223,9 @@ string CommandHandler::buy_player(vector <string> command)
     }
     if (!chosen_player->is_available())
         return NOT_AVAILABLE_FOR_PURCHASE;
-    
     string current_user_teamname = session->get_current_user_teamname();
     Team* current_user_team = futfan->find_team_by_name(current_user_teamname);
-
-    try 
+    try
     {
         current_user_team->buy_player(chosen_player);
     } catch (BadRequest &err){
@@ -277,10 +275,8 @@ string CommandHandler::sell_player(vector <string> command)
     string player_name = command[4];
     for (int i = 5; i < (int)command.size(); ++i)
         player_name += " ", player_name += command[i];
-    
     string current_user_teamname = session->get_current_user_teamname();
     Team* current_user_team = futfan->find_team_by_name(current_user_teamname);
-
     try
     {
         current_user_team->sell_player(player_name);
@@ -296,7 +292,6 @@ string CommandHandler::get_users_ranking(vector <string> command)
 {
     if ((int)command.size() != 2)
         return BAD_REQUEST;
-    
     return session->get_users_ranking();
 }
 
@@ -308,6 +303,7 @@ string CommandHandler::pass_week(vector <string> command)
         return PERMISSION_DENIED;
     session->current_week_num++;
     futfan->pass_week(session->current_week_num);
+    return OK;
 }
 
 void CommandHandler::handle_commands()
@@ -326,7 +322,6 @@ void CommandHandler::handle_commands()
             cout << err.out() << endl;
             continue;
         }
-
         if (command_num == SIGNUP)
             cout << signup_user(command_words) << endl;
 
@@ -352,23 +347,23 @@ void CommandHandler::handle_commands()
             cout << get_team_of_the_week(command_words) << endl;
 
         if (command_num == PLAYERS)
-            cout << get_players(command_words);
+            cout << get_players(command_words)<<endl;
 
         if (command_num == MATCHES_RESULT_LEAGUE)
-            cout << get_match_results(command_words) << endl;
+            cout << get_match_results(command_words);
 
         if (command_num == SQUAD)
             cout << get_squad(command_words) << endl;
 
         if (command_num == BUY_PLAYER)
             cout << buy_player(command_words) << endl;
-        
+
         if (command_num == SELL_PLAYER)
             cout << sell_player(command_words) << endl;
-        
+
         if (command_num == USERS_RANKING)
             cout << get_users_ranking(command_words);
-        
+
         if (command_num == PASS_WEEK)
             cout << pass_week(command_words) << endl;
     }

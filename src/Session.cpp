@@ -90,9 +90,9 @@ string Session::get_users_ranking()
 {
     ostringstream out;
     sort(users.begin(), users.end(), sort_users_by_total_points);
-    for (int i = 1; i <= (int)users.size(); ++i)
+    for (int i = 0; i < (int)users.size(); ++i)
     {
-        out << i << ". team_name: " << users[i].username << " | point: ";
+        out << i+1 << ". team_name: " << users[i].username << " | point: ";
         out << users[i].team->get_total_points() << endl;
     }
     return out.str();

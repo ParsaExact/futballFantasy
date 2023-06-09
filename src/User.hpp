@@ -4,7 +4,7 @@
 #include "Globalstuff.hpp"
 #include "Team.hpp"
 
-class User 
+class User
 {
 public:
     User();

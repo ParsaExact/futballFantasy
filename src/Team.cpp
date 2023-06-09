@@ -96,7 +96,7 @@ void Team::update_new_week(int week_num)
         allowed_transfers = ALLOWED_TRANSFERS_WHEN_COMPLETE;
     else
         allowed_transfers = INF;
-    
+
     float last_week_points = 0;
     bool squad_is_complete = true;
     for (int i = 0; i < ROLE_CNT; ++i)

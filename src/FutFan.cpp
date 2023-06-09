@@ -1,5 +1,4 @@
 #include "FutFan.hpp"
-
 bool cmp(Club *i, Club *j)
 {
     if (i->get_points() < j->get_points())
@@ -25,11 +24,11 @@ bool cmp_player(Player *i, Player *j)
 
 FutFan::~FutFan()
 {
-    for (Player* player : players)
+    for (Player *player : players)
         delete player;
-    for (Club* club : clubs)
+    for (Club *club : clubs)
         delete club;
-    for (Team* team : teams)
+    for (Team *team : teams)
         delete team;
 }
 
@@ -37,7 +36,7 @@ void FutFan::add_player(string player_name, int role)
 {
     for (Player *player : players)
         if (player->get_name() == player_name)
-            return; // throw duplicate name error
+            return; // duplicate name error
     players.push_back(new Player(player_name, role));
 }
 
@@ -203,7 +202,7 @@ void FutFan::update_week_stats(int week_num)
 {
     vector<Match> empty_vec;
     all_matches.push_back(empty_vec);
-    for (Team* team : teams)
+    for (Team *team : teams)
         team->update_new_week(week_num);
     for (Player *player : players)
     {
@@ -285,16 +284,24 @@ string FutFan::team_of_the_week(int week_num)
 string FutFan::print_players(vector<Player *> club_players)
 {
     ostringstream out;
-    out << "list of players:" << endl;
+    out << "list of players:";
     for (int i = 0; i < club_players.size(); ++i)
-        out << i << ". name: " << club_players[i]->get_name() << " | role: " << ROLE_ABB_NAME[club_players[i]->get_role()] << " | score: " << club_players[i]->calculate_avarage_score() << endl;
+        out << endl
+            << i << ". name: " << club_players[i]->get_name() << " | role: " << ROLE_ABB_NAME[club_players[i]->get_role()] << " | score: " << club_players[i]->calculate_avarage_score();
     return out.str();
 }
 
 string FutFan::output_players(bool ranked, int position, Club *club)
 {
     if (position == -1 && !ranked)
-        return print_players(players);
+    {
+        vector<Player *> club_players;
+        for (int i = 0; i < ROLE_CNT; i++)
+            for (Player *player : club->players[i])
+                if (player->get_name() == player->get_name())
+                    club_players.push_back(player);
+        return print_players(club_players);
+    }
     if (ranked && position == -1)
     {
         sort(players.begin(), players.end(), cmp_player);
@@ -302,7 +309,7 @@ string FutFan::output_players(bool ranked, int position, Club *club)
     }
     if (ranked)
         sort(club->players[position].begin(), club->players[position].end(), cmp_player);
-        return print_players(club->players[position]);
+    return print_players(club->players[position]);
     if (position != -1)
     {
         return print_players(club->players[position]);
