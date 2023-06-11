@@ -32,20 +32,20 @@ struct CommandType {
 };
 
 const vector <CommandType> COMMAND_TYPE = {
-    {"GET", "team_of_the_week"}, //done
-    {"GET", "players"}, //done
-    {"GET", "league_standings"}, //done
+    {"GET", "team_of_the_week"},
+    {"GET", "players"},
+    {"GET", "league_standings"},
     {"GET", "users_ranking"},
-    {"GET", "matches_result_league"}, //done
-    {"POST", "signup"}, //done
-    {"POST", "login"}, //done
-    {"POST", "register_admin"}, //done
-    {"POST", "logout"}, //done
+    {"GET", "matches_result_league"},
+    {"POST", "signup"},
+    {"POST", "login"},
+    {"POST", "register_admin"},
+    {"POST", "logout"},
     {"POST", "sell_player"},
     {"POST", "buy_player"},
-    {"GET", "squad"}, //done
-    {"POST", "close_transfer_window"}, //done
-    {"POST", "open_transfer_window"}, //done
+    {"GET", "squad"},
+    {"POST", "close_transfer_window"},
+    {"POST", "open_transfer_window"},
     {"POST", "pass_week"}
 };
 
@@ -85,6 +85,7 @@ const string BAD_REQUEST = "Bad Request";
 const string PERMISSION_DENIED = "Permission Denied";
 const string NOT_FOUND = "Not Found";
 const string OK = "OK";
+const string ENDLINE = "\n";
 
 vector <string> split_line_into_words(string line, char delimiter);
 

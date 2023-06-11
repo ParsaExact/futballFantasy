@@ -286,8 +286,8 @@ string FutFan::print_players(vector<Player *> club_players)
     ostringstream out;
     out << "list of players:";
     for (int i = 0; i < club_players.size(); ++i)
-        out << endl
-            << i << ". name: " << club_players[i]->get_name() << " | role: " << ROLE_ABB_NAME[club_players[i]->get_role()] << " | score: " << club_players[i]->calculate_avarage_score();
+        out
+            << i << ". name: " << club_players[i]->get_name() << " | role: " << ROLE_ABB_NAME[club_players[i]->get_role()] << " | score: " << club_players[i]->calculate_avarage_score() << endl;
     return out.str();
 }
 

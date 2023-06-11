@@ -19,10 +19,10 @@ string Team::output_squad()
     for (int i = 0; i < ROLE_CNT; ++i)
         if ((int)squad[i].size() != SQUAD_POS_NUM[i])
             throw Empty();
-    
+
     for (int i = 0; i < ROLE_CNT; ++i)
         sort(squad[i].begin(), squad[i].end(), sort_by_player_name);
-    
+
     out << "fantasy team: " << team_name << endl;
 
     int cnt = 0;
